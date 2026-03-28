@@ -1,12 +1,16 @@
 mod rusty_cache;
 use rusty_cache::{Cache, CacheValues};
-use std::io::{self, Write};
+use std::{
+    fs,
+    io::{self, Write},
+};
 
 fn main() {
-    let output_file  = String::from("data/SAVE.txt");
+    let output_file = String::from("data/SAVE.txt");
+    fs::create_dir_all("data").expect("Failed to create data directory");
     let mut cache = Cache::new(output_file);
     println!("RustyCache v0.1 (Startup Mode)");
-    
+
     loop {
         print!("> ");
         io::stdout().flush().unwrap();
@@ -56,14 +60,12 @@ fn main() {
                     None => println!("NOTHING REMOVED"),
                 }
             }
-            "SAVE" => {
-                match cache.write_to_file() {
-                    Ok(_) => println!("Cache saved to file."),
-                    Err(e) => println!("Error saving cache: {}", e),
-                }
-            }
+            "SAVE" => match cache.write_to_file() {
+                Ok(_) => println!("Cache saved to file."),
+                Err(e) => println!("Error saving cache: {}", e),
+            },
             "EXIT" => break,
-            _ => println!("Unknown command. Try SET or GET."),
+            _ => println!("Unknown command. Try INSERT, GET, DELETE, SAVE, or EXIT."),
         }
     }
 }
