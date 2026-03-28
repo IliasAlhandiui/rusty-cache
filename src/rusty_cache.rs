@@ -4,6 +4,7 @@ use std::{collections::HashMap, fs, io};
 pub enum CacheValues {
     Text(String),
     Number(i32),
+    Boolean(bool),
 }
 
 pub struct Cache {
@@ -38,6 +39,7 @@ impl Cache {
             let value_str = match value {
                 CacheValues::Text(s) => s.clone(),
                 CacheValues::Number(n) => n.to_string(),
+                CacheValues::Boolean(b) => b.to_string(),
             };
             contents.push_str(&format!("{}: {}\n", key, value_str));
         }

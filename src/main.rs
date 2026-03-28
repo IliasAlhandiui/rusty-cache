@@ -36,7 +36,10 @@ fn main() {
 
                 let value = match value_raw.parse::<i32>() {
                     Ok(number) => CacheValues::Number(number),
-                    Err(_) => CacheValues::Text(value_raw.to_string()),
+                    Err(_) => match value_raw.parse::<bool>() {
+                        Ok(boolean) => CacheValues::Boolean(boolean),
+                        Err(_) => CacheValues::Text(value_raw.to_string()),
+                    },
                 };
 
                 cache.insert(key, value);
